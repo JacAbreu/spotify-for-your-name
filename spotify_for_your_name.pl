@@ -9,6 +9,9 @@ use Text::Unaccent;
 use HTML::Entities;
 use Encode;
 
+my $client_id = 'ce967e5f094e4cd8adbf6a388a9a0564';
+my client_secret = '3cfede2c192c452cab24d675d486e8fd';
+
 get '/' => 'index';
 
 get '/login' => 'login';
