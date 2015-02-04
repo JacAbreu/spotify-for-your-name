@@ -10,6 +10,7 @@ use HTML::Entities;
 use Encode;
 use HTTP::Request::Common;
 use Cwd 'abs_path';
+use Data::Random::String;
 
 
 my $client_id = 'ce967e5f094e4cd8adbf6a388a9a0564';
@@ -17,9 +18,13 @@ my $client_secret = '3cfede2c192c452cab24d675d486e8fd';
 my $redirect_uri = abs_path($0);
 my $scope = 'user-read-private user-read-email';
 
+my $options_to_random = 'ABCDEFGHIJKLMNOPQRSTUVWXYZabcdefghijklmnopqrstuvwxyz0123456789';
+my $state = rand(options_to_random);
+
+
 get '/' => 'index';
 
-get '/login' =>sub {
+get '/authorization' =>sub {
     
     $ua->request(POST 'https://accounts.spotify.com/authorize?', 
         [ response_type => 'code',
@@ -28,6 +33,10 @@ get '/login' =>sub {
             redirect_uri => $redirect_uri,
             state => $state ]);
             
+}
+
+get '/login' => sub {
+
 }
 
 app->start;
@@ -45,7 +54,7 @@ __DATA__
             <div class="container">
                 <div id="login">
                     <h1>This is an example of the Authorization Code flow</h1>
-                    <a href="/login" class="btn btn-primary">Log in with Spotify</a>
+                    <a href="/authorization" class="btn btn-primary">Log in with Spotify</a>
                     </div>
                     <div id="loggedin">
                     <div id="user-profile">
