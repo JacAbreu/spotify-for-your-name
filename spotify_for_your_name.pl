@@ -8,14 +8,27 @@ use JSON;
 use Text::Unaccent;
 use HTML::Entities;
 use Encode;
+use HTTP::Request::Common;
+use Cwd 'abs_path';
+
 
 my $client_id = 'ce967e5f094e4cd8adbf6a388a9a0564';
-my client_secret = '3cfede2c192c452cab24d675d486e8fd';
-my redirect_uri = '';
+my $client_secret = '3cfede2c192c452cab24d675d486e8fd';
+my $redirect_uri = abs_path($0);
+my $scope = 'user-read-private user-read-email';
 
 get '/' => 'index';
 
-get '/login' => 'login';
+get '/login' =>sub {
+    
+    $ua->request(POST 'https://accounts.spotify.com/authorize?', 
+        [ response_type => 'code',
+            client_id => $client_id,
+            scope => $scope,
+            redirect_uri => $redirect_uri,
+            state => $state ]);
+            
+}
 
 app->start;
 
